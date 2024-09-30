@@ -1,0 +1,124 @@
+---
+title: "eds223-week1"
+author: "Nicole Pepper"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Set up workspace
+
+```{r}
+# Install packages
+#install.packages("stars") # raster data
+#install.packages("tmap") # mapping
+#install.packages("viridisLite")
+
+```
+
+```{r}
+# Load libraries
+library(sf)
+library(stars)
+library(tmap)
+library(here)
+library(viridisLite)
+```
+
+## Bring in some spatial data
+
+```{r}
+# raster of global elevation
+world_elevation <- read_stars(here("data","worldelevation.tif"))
+
+# country boundaries
+world_vector <- read_sf(here("data","worldvector.gpkg"))
+
+# major cities
+world_cities <- read_sf(here("data","worldcities.gpkg"))
+
+```
+
+## Make your first map!
+
+```{r}
+tm_shape(world_elevation)+
+  tm_raster() +
+tm_shape(world_vector) +
+  tm_borders() +
+tm_shape(world_cities) + 
+  tm_dots()
+
+```
+
+```{r}
+tm_shape(world_elevation, bbox = world_cities)+
+  tm_raster() +
+tm_shape(world_vector) +
+  tm_borders() +
+tm_shape(world_cities) + 
+  tm_dots()
+```
+
+```{r}
+tm_shape(world_vector) +
+  tm_polygons(col = "lightblue",
+              border.col = "black",
+              lwd = 0.5,
+              lty = "dashed")
+```
+
+```{r}
+tm_shape(world_vector) + 
+  tm_borders(col = "red")
+```
+
+```{r}
+tm_shape(world_vector) + 
+  tm_fill(col = "red")
+```
+
+```{r}
+tm_shape(world_vector) + 
+  tm_fill("gdp_per_cap")
+```
+
+```{r}
+tm_shape(world_cities) +
+  tm_dots()
+
+```
+
+```{r}
+tm_shape(world_vector) + 
+  tm_polygons("life_expectancy", 
+              palette= c("yellow","green"),
+              title = "Life Expectancy")
+```
+
+```{r}
+```
+
+```{r}
+tm_shape(world_vector) + 
+  tm_polygons("life_expectancy",
+              palette = viridis(option = "magma", 8), 
+              title = "Life Expectancy")
+```
+
+```{r}
+tm_shape(world_vector) + 
+  tm_polygons() + 
+  tm_shape(world_cities) + 
+  tm_symbols(size = "pop2020",
+             legend.size.is.portrait = TRUE)
+```
+
+
+```{r}
+tm_shape(world_vector) + 
+  tm_fill() + 
+  tm_grid()
+```
+

@@ -118,7 +118,48 @@ tm_shape(world_vector) +
 
 ```{r}
 tm_shape(world_vector) + 
-  tm_fill() + 
-  tm_grid()
+  tm_graticules(alpha = 0.5) + 
+    tm_fill() 
+```
+
+```{r}
+tm_shape(world_vector) + 
+  tm_fill() +
+  tm_scale_bar() + 
+  tm_compass(position = c("left","top"))
+```
+
+
+## Make an interactive map
+```{r}
+tmap_mode("view")
+
+tm_shape(world_vector) + 
+  tm_fill(col = "wb_income_region", 
+          palette = viridisLite::plasma(5),
+          title = "Regional income") +  # legend title
+    tm_borders(col = "white") + 
+  tm_layout(bg.color = "grey95",
+            main.title = "Global income by country",
+            frame = FALSE) # removes map frame
+
+```
+
+```{r}
+tmap_mode("plot")
+
+map1 <- tm_shape(world_vector) + 
+  tm_fill(col = "wb_income_region", 
+          palette = viridisLite::plasma(5),
+          title = "Regional income") +  # legend title
+  tm_layout(bg.color = "grey95",
+            main.title = "Global income by country",
+            frame = FALSE) # removes map frame
+```
+
+
+Save your map
+```{r}
+tmap_save(map1, here("tmap-example.png"))
 ```
 
